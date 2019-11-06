@@ -21,7 +21,6 @@ def create_pokemon(name, hp, special_attack, defense, attack, special_defense, s
     return pokemon
 
 
-
 def load_pokemon_from_api(name):
     request = requests.get(f'https://pokeapi.co/api/v2/pokemon/{name}')
     pokemon_data = request.json()
@@ -154,9 +153,8 @@ def edit_pokemon_stats(name, stat, new_value):
 
     return pokemon
 
+
 def edit_pokemon(pokemon, data):
-
-
     pokemon.update(**data).execute()
 
     return pokemon

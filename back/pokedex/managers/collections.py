@@ -2,6 +2,7 @@
 # from playhouse.shortcuts import update_model_from_dict
 # from peewee import fn
 from pokedex.models.collection import User, Collection, PokemonCollection
+# from pokedex.models.consommable import Potion, PotionCollection
 
 
 def create_new_user(name):
@@ -62,3 +63,6 @@ def get_pokemonscollection_by_name(pokemon_name, collection):
 def get_pokemons_from_collection(collection):
     pokemons_collections=PokemonCollection.select().where(PokemonCollection.collection==collection)
     return pokemons_collections
+
+
+

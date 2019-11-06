@@ -9,6 +9,7 @@ from .pokemons import Pokemon, Pokemons, Stats
 from .species import Species, Specie
 from .types import Types
 from .collections import User, Collections, Collection
+from .consommables import Potion, PotionCollection
 from .matches import Play
 # from .species import Species, Specie, EggGroups
 from .egg_groups import EggGroups
@@ -49,6 +50,9 @@ def register_api(app):
     api.add_resource(Collections, '/collections')
     api.add_resource(Collection, '/collection/<collection_name>')
     api.add_resource(Play, '/play')
+    api.add_resource(Potion, '/consommables/potion')
+    api.add_resource(PotionCollection, '/consommables/potioncollection')
+
 
 
 

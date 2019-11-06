@@ -1,6 +1,8 @@
 from flask import request
-from pokedex.managers.collections import get_pokemonscollection_by_name, delete_pokemon_from_collection, create_new_user, \
-    get_user_by_name, create_a_new_collection, get_collection_by_name, add_pokemon_to_collection, get_pokemons_from_collection
+from pokedex.managers.collections import get_pokemonscollection_by_name, delete_pokemon_from_collection, \
+    create_new_user, \
+    get_user_by_name, create_a_new_collection, get_collection_by_name, add_pokemon_to_collection, \
+    get_pokemons_from_collection
 from pokedex.managers.pokemons import search_pokemons, get_pokemon_by_name, edit_pokemon
 from flask_restful import Resource
 
@@ -58,7 +60,7 @@ class Collection(Resource):
         #     print(pokemons_collection[0].name)
 
         delete_pokemon_from_collection(pokemons_collection[0])
-        if len(pokemons_collection)>1:
+        if len(pokemons_collection) > 1:
 
             return "One %s delete from %s" % (pokemons_collection[0].name, collection.name)
         else:
@@ -69,20 +71,24 @@ class Collection(Resource):
         if collection is None:
             return {'msg': 'Collection not found'}, 404
         pokemon_name = request.args['pokemon']
-        pokemon_collection = get_pokemonscollection_by_name(pokemon_name)
+        pokemon_collection = get_pokemonscollection_by_name(pokemon_name, collection)
         if pokemon_collection is None:
             return {'msg': 'Not found'}, 404
         data = request.json
         edit_pokemon(pokemon_collection, data)
-        pokemon_collection = get_pokemonscollection_by_name(pokemon_name)
+        pokemon_collection = get_pokemonscollection_by_name(pokemon_name, collection)
         return pokemon_collection.name
 
     def get(self, collection_name):
         collection = get_collection_by_name(collection_name)
         if collection is None:
             return {'msg': 'Collection not found'}, 404
-        result=[]
-        pokemons_collection=get_pokemons_from_collection(collection)
+        result = []
+        pokemons_collection = get_pokemons_from_collection(collection)
         for elem in pokemons_collection:
             result.append(elem.get_small_data())
         return result
+
+
+
+

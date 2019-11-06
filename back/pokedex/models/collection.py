@@ -35,6 +35,15 @@ class PokemonCollection(CommonModel):
     speed = FloatField()
 
 
+    def heal(self, amount, max_hp):
+        self.hp = self.hp + int(amount)
+        print('healing a', self.name, "of ", amount, "hp")
+        if self.hp > max_hp:
+            self.hp = max_hp
+            print('hp of ', self.name, 'is at max')
+        return self.hp
+
+
 
 
     # pokemon_sprite_back = CharField()
