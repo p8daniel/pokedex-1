@@ -59,17 +59,16 @@ class PokemonMatch(CommonModel):
     player = ForeignKeyField(User)
     match=ForeignKeyField(Match)
 
-    # def take_damages(self, attack):
-    #     damages = attack - self.defense
-    #     if damages < 0:
-    #         damages = 0
-    #     old_hp = self.hp
-    #     self.shp = self.hp - damages
-    #     if self.hp <= 0:
-    #         self.hp = 0
-    #     # else:
-    #     #     print("\t>", self.name, "hp: ", old_hp, "-->", self.hp)
-    #     return self.hp
+    def take_damages(self, attack):
+        damages = attack - self.defense
+        if damages < 0:
+            damages = 0
+        self.hp = self.hp - damages
+        if self.hp <= 0:
+            self.hp = 0
+        self.save()
+        return self.hp
+
 
 
 
