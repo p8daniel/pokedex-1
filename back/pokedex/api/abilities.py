@@ -8,8 +8,9 @@ class Abilities(Resource):
     def get(self):
         pokemons = request.args.get('pokemons', 'false') == 'true'
         unused = request.args.get('unused', 'false') == 'true'
+        query_gerneration = request.args.get('generation', None)
         search= request.args.get('query')
-        abilities = get_abilities(search, unused)
+        abilities = get_abilities(search, unused, query_gerneration)
 
         result = []
         for ability in abilities:

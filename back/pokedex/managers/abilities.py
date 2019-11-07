@@ -1,6 +1,7 @@
 import requests
 
-from pokedex.models.pokemon import Ability, Generation, AbilityEffects, VerboseEffect, Language, PokemonAbilities, Pokemon
+from pokedex.models.pokemon import Ability, Generation, AbilityEffects, VerboseEffect, Language, PokemonAbilities, \
+    Pokemon
 
 
 def load_ability_from_api(name):
@@ -23,7 +24,8 @@ def load_ability_from_api(name):
             language = Language.get_or_none(name=effect['language']['name'])
             if language is None:
                 language = Language.create(name=effect['language']['name'])
-            verbose_effect = VerboseEffect.create(effect=effect['effect'], short_effect=effect['short_effect'], language=language)
+            verbose_effect = VerboseEffect.create(effect=effect['effect'], short_effect=effect['short_effect'],
+                                                  language=language)
         ability_effect = AbilityEffects.create(ability=ability, effect=verbose_effect)
 
     return ability
@@ -48,8 +50,7 @@ def load_abilities_from_api():
     return i
 
 
-
-def get_abilities(search=None, unused=False):
+def get_abilities(search=None, unused=False, query_gerneration=None):
     abilities = []
 
     if search is None:
@@ -62,6 +63,19 @@ def get_abilities(search=None, unused=False):
 
     if unused:
         abilities = [ability for ability in abilities if len(ability.pokemons) == 0]
+    if query_gerneration is not None:
+
+        filtered_abilities = []
+        for ability in abilities:
+
+            # abilities = []
+
+            generation_de_ce_ability = Generation.select().where(Generation.id == ability.generation)
+            print((generation_de_ce_ability[0].name))
+            if query_gerneration in generation_de_ce_ability[0].name:
+                filtered_abilities.append(ability)
+        abilities = filtered_abilities
+
     return abilities
 
 
@@ -76,7 +90,8 @@ def add_ability(name, generation_name):
 
 def get_pokemons_from_ability(ability_id):
     pokemons = []
-    pokemon_abilities = PokemonAbilities.select(PokemonAbilities, Pokemon).join(Pokemon).where(PokemonAbilities.ability == ability_id)
+    pokemon_abilities = PokemonAbilities.select(PokemonAbilities, Pokemon).join(Pokemon).where(
+        PokemonAbilities.ability == ability_id)
     for pokemon_ability in pokemon_abilities:
         pokemons.append(pokemon_ability.pokemon)
     return pokemons
