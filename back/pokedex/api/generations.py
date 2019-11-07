@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from pokedex.managers.generations import search_generations, get_number_of_ability, get_number_of_type
+from pokedex.managers.generations import search_generations, get_number_of_ability, get_number_of_type, create_new_generation
 
 
 class Generation(Resource):
@@ -24,3 +24,9 @@ class Generation(Resource):
             generations.append(mydict)
 
         return generations
+
+    def put(self):
+        generation_name = request.args['generation']
+        create_new_generation(generation_name)
+
+

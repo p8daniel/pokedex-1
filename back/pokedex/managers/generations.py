@@ -20,3 +20,6 @@ def get_number_of_type(generation):
     select=Type.select().where(Type.generation == generation)
     number=select.count()
     return number
+
+def create_new_generation(generation_name):
+    Generation.create(name=generation_name)
