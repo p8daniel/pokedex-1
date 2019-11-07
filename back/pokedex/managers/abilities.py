@@ -57,7 +57,7 @@ def get_abilities(search=None, unused=False, query_gerneration=None):
         search = ""
 
     abilities = []
-    for ability in Ability.select():
+    for ability in Ability.select().order_by(Ability.id):
         if search in ability.name:
             abilities.append(ability)
 

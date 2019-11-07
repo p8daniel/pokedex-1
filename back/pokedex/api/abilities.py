@@ -8,9 +8,12 @@ class Abilities(Resource):
     def get(self):
         pokemons = request.args.get('pokemons', 'false') == 'true'
         ask_effects = request.args.get('effects', 'false') == 'true'
+        limit = request.args.get('limit', None)
+        offset = request.args.get('offset', None)
+
         unused = request.args.get('unused', 'false') == 'true'
         query_gerneration = request.args.get('generation', None)
-        search= request.args.get('query')
+        search = request.args.get('query')
         abilities = get_abilities(search, unused, query_gerneration)
 
         result = []
@@ -25,6 +28,12 @@ class Abilities(Resource):
                     ability_result['pokemons'].append(pokemon_result)
 
             result.append(ability_result)
+
+        if offset is not None:
+            result = result[int(offset):]
+        if limit is not None:
+            result = result[:int(limit)]
+
         return result
 
     def put(self):
