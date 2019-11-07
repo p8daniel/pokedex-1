@@ -1,4 +1,4 @@
-from pokedex.models.pokemon import Generation
+from pokedex.models.pokemon import Generation, Ability
 
 def search_generations(query=None):
 
@@ -8,3 +8,10 @@ def search_generations(query=None):
         generations = Generation.select()
 
     return generations
+
+
+def get_number_of_ability(generation):
+    select=Ability.select().where(Ability.generation == generation)
+    number=select.count()
+    # print(number)
+    return number
