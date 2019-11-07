@@ -8,6 +8,7 @@ from pokedex.managers.analytics import add_request_history
 from .pokemons import Pokemon, Pokemons, Stats
 from .species import Species, Specie
 from .types import Types
+from .abilities import Abilities
 from .collections import User, Collections, Collection
 from .consommables import Potion, PotionCollection
 from .matches import Play
@@ -52,6 +53,7 @@ def register_api(app):
     api.add_resource(Play, '/play')
     api.add_resource(Potion, '/consommables/potion')
     api.add_resource(PotionCollection, '/consommables/potioncollection')
+    api.add_resource(Abilities, '/abilities')
 
 
 

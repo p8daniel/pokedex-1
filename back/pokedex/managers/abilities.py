@@ -1,6 +1,6 @@
 import requests
 
-from pokedex.models.pokemon import Ability, Generation, AbilityEffects, VerboseEffect, Language
+from pokedex.models.pokemon import Ability, Generation, AbilityEffects, VerboseEffect, Language, PokemonAbilities, Pokemon
 
 
 def load_ability_from_api(name):
@@ -46,3 +46,37 @@ def load_abilities_from_api():
         print(f'{i} abilities loaded.')
 
     return i
+
+
+
+def get_abilities(search=None, unused=False):
+    abilities = []
+
+    if search is None:
+        search = ""
+
+    abilities = []
+    for ability in Ability.select():
+        if search in ability.name:
+            abilities.append(ability)
+
+    if unused:
+        abilities = [ability for ability in abilities if len(ability.pokemons) == 0]
+    return abilities
+
+
+def add_ability(name, generation_name):
+    generation = Generation.get_or_none(Generation.name == generation_name)
+    if generation is None:
+        generation = Generation.create(name=generation_name)
+
+    new_ability = Ability.create(name=name, generation=generation)
+    return new_ability
+
+
+def get_pokemons_from_ability(ability_id):
+    pokemons = []
+    pokemon_abilities = PokemonAbilities.select(PokemonAbilities, Pokemon).join(Pokemon).where(PokemonAbilities.ability == ability_id)
+    for pokemon_ability in pokemon_abilities:
+        pokemons.append(pokemon_ability.pokemon)
+    return pokemons

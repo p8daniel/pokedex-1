@@ -6,7 +6,7 @@ from .database import db
 
 class CommonModel(Model):
     def get_small_data(self):
-        return model_to_dict(self, recurse=False, backrefs=False)
+        return model_to_dict(self, recurse=True, backrefs=False)
 
     class Meta:
         database = db
@@ -95,6 +95,8 @@ class Ability(CommonModel):
     name = CharField()
     is_main_series = BooleanField()
     generation = ForeignKeyField(Generation)
+
+
 
 
 class AbilityEffects(CommonModel):
