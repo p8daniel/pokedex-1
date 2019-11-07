@@ -6,7 +6,7 @@ from .database import db
 
 class CommonModel(Model):
     def get_small_data(self):
-        return model_to_dict(self, recurse=True, backrefs=False)
+        return model_to_dict(self, recurse=False, backrefs=False)
 
     class Meta:
         database = db
@@ -42,17 +42,15 @@ class Pokemon(CommonModel):
     sprite_back = CharField()
     sprite_front = CharField()
 
-
-
     @property
     def stats(self):
         return {'hp': self.hp, 'special-attack': self.special_attack, 'defense': self.defense, 'attack': self.attack,
                 'special-defense': self.special_defense, 'speed': self.speed}
 
     def get_abilities_effect(self):
-        abilities_effects_list= []
+        abilities_effects_list = []
         for pokemon_ability in self.abilities:
-            effects_list=[]
+            effects_list = []
             for ability_effect in pokemon_ability.ability.effects:
                 effects_list.append(ability_effect.effect.effect)
             abilities_effects_list.append(effects_list)
@@ -62,32 +60,21 @@ class Pokemon(CommonModel):
     # def get_abilities(self):
     #     return [pokemon_ability.ability.name for pokemon_ability in self.abilities]
 
+    def get_small_data(self, ask_effect='false', ask_shape='false', show_abilities='false'):
 
-
-
-    def get_small_data(self,ask_effect='false',ask_shape='false', show_abilities='false'):
-
-        pokedata={"id": self.id, "name": self.name, **self.stats, 'sprite_back': self.sprite_back,
+        pokedata = {"id": self.id, "name": self.name, **self.stats, 'sprite_back': self.sprite_back,
                     'sprite_front': self.sprite_front}
 
         if ask_effect is True:
-            pokedata['effects']= self.get_abilities_effect()
+            pokedata['effects'] = self.get_abilities_effect()
 
         if ask_shape is True:
-            pokedata['shapes']= [poke_forms.name for poke_forms in self.ref_shapes]
+            pokedata['shapes'] = [poke_forms.name for poke_forms in self.ref_shapes]
 
         if show_abilities is True:
             pokedata['abilities'] = [pokemon_ability.ability.name for pokemon_ability in self.abilities]
 
-
-
-
-
         return pokedata
-
-
-
-
 
 
 class Ability(CommonModel):
@@ -96,7 +83,13 @@ class Ability(CommonModel):
     is_main_series = BooleanField()
     generation = ForeignKeyField(Generation)
 
-
+    def get_small_data(self):
+        data = {"id": self.id,
+                "name": self.name,
+                "is_main_series": self.is_main_series,
+                "generation": self.generation.name
+                }
+        return data
 
 
 class AbilityEffects(CommonModel):
@@ -142,38 +135,28 @@ class EggGroup(CommonModel):
     id = PrimaryKeyField()
     name = CharField()
 
-
     def get_species(self):
-        species_list=[]
-        egg_species=self.pokemon_species_eggs
+        species_list = []
+        egg_species = self.pokemon_species_eggs
         for egg_specie in egg_species:
             species_list.append(egg_specie.pokemon_species.name)
         return species_list
 
     def get_pokemons(self):
-        pokemons_list=[]
+        pokemons_list = []
         egg_species = self.pokemon_species_eggs
         for egg_specie in egg_species:
-                pokemons_list.append(egg_specie.pokemon_species.get_pokemons())
+            pokemons_list.append(egg_specie.pokemon_species.get_pokemons())
         return pokemons_list
 
-
-    def get_small_data(self,show_species='false', show_pokemons='false'):
-        result={"id": self.id, "name": self.name}
-
-
-
-
+    def get_small_data(self, show_species='false', show_pokemons='false'):
+        result = {"id": self.id, "name": self.name}
 
         if show_species is True:
-            result['species']= self.get_species()
-
+            result['species'] = self.get_species()
 
         if show_pokemons is True:
-            result['pokemons']=self.get_pokemons()
-
-
-
+            result['pokemons'] = self.get_pokemons()
 
         return result
 
