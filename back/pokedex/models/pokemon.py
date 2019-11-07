@@ -83,12 +83,15 @@ class Ability(CommonModel):
     is_main_series = BooleanField()
     generation = ForeignKeyField(Generation)
 
-    def get_small_data(self):
+    def get_small_data(self, ask_effects='false'):
         data = {"id": self.id,
                 "name": self.name,
                 "is_main_series": self.is_main_series,
                 "generation": self.generation.name
                 }
+        if ask_effects:
+            data['effects'] = [ability_effect.effect.effect for ability_effect in self.effects]
+
         return data
 
 

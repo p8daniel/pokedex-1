@@ -7,6 +7,7 @@ from pokedex.managers.abilities import get_abilities, get_pokemons_from_ability,
 class Abilities(Resource):
     def get(self):
         pokemons = request.args.get('pokemons', 'false') == 'true'
+        ask_effects = request.args.get('effects', 'false') == 'true'
         unused = request.args.get('unused', 'false') == 'true'
         query_gerneration = request.args.get('generation', None)
         search= request.args.get('query')
@@ -14,7 +15,7 @@ class Abilities(Resource):
 
         result = []
         for ability in abilities:
-            ability_result = ability.get_small_data()
+            ability_result = ability.get_small_data(ask_effects)
 
             if pokemons:
                 ability_result['pokemons'] = []
