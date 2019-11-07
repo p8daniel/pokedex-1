@@ -71,7 +71,7 @@ def get_abilities(search=None, unused=False, query_gerneration=None):
             # abilities = []
 
             generation_de_ce_ability = Generation.select().where(Generation.id == ability.generation)
-            print((generation_de_ce_ability[0].name))
+            # print((generation_de_ce_ability[0].name))
             if query_gerneration in generation_de_ce_ability[0].name:
                 filtered_abilities.append(ability)
         abilities = filtered_abilities

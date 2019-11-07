@@ -15,6 +15,8 @@ from .matches import Play
 # from .species import Species, Specie, EggGroups
 from .egg_groups import EggGroups
 from .useragents import UserAgent
+from .generations import Generation
+
 
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
@@ -54,6 +56,7 @@ def register_api(app):
     api.add_resource(Potion, '/consommables/potion')
     api.add_resource(PotionCollection, '/consommables/potioncollection')
     api.add_resource(Abilities, '/abilities')
+    api.add_resource(Generation, '/generations')
 
 
 
