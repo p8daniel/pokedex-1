@@ -5,6 +5,7 @@ from pokedex.managers.generations import search_generations
 
 class Generation(Resource):
     def get(self):
-        list_of_generation=search_generations()
+        query = request.args.get('query', None)
+        list_of_generation=search_generations(query)
         generations=[generation.get_small_data() for generation in list_of_generation]
         return generations
