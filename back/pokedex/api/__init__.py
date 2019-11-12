@@ -16,6 +16,7 @@ from .matches import Play
 from .egg_groups import EggGroups
 from .useragents import UserAgent
 from .generations import Generation
+from .scrapping import Scrapper
 
 
 api_bp = Blueprint('api', __name__)
@@ -57,6 +58,7 @@ def register_api(app):
     api.add_resource(PotionCollection, '/consommables/potioncollection')
     api.add_resource(Abilities, '/abilities')
     api.add_resource(Generation, '/generations')
+    api.add_resource(Scrapper, '/scrapping')
 
 
 

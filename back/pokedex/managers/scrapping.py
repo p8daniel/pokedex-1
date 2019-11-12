@@ -1,5 +1,6 @@
 import requests
 from lxml import html
+
 from tqdm import tqdm
 
 from pokedex.models.scrapping import Pokemon
@@ -46,3 +47,8 @@ def load_pokemons_from_wikipedia():
         pokemon_name = pokemons[pokemon_id]
 
         Pokemon.create(id=pokemon_id, name=pokemon_name)
+
+
+def get_wiki_pokemons_from_db():
+    pokemons=Pokemon.select().order_by(Pokemon.id)
+    return pokemons
