@@ -49,46 +49,103 @@ GET /api/v1/abilities
   <tr>
     <th>Name</th>
     <th>Description</th>
-    <th>Type/th>
+    <th>Type</th>
   </tr>
+  
   <tr>
     <th>pokemons</th>
-    <th>effects</th>
-    <th>limit</th>
-    <th>offset</th>
-    <th>unused</th>
-    <th>generation</th>
-    <th>query</th>
-  </tr>  
-  <tr>
     <th>when true shows the list of pokemons with this ability</th>
-    <th>when true shows the list of effects of tha t abilitiey</th>
-    <th>set limit to the number of abilities shwon</th>
-    <th>start showing abilitiies list from the specified offset</th>
-    <th> not implemented</th>
-    <th>shows only abilities with that specified generation</th>
-    <th>shows only abilities which contain that specific key</th>
-  </tr>  
+    <th>boolean</th>
+  </tr>
+  
   <tr>
+    <th>effects</th>
+    <th>when true shows the list of effects of that ability</th>
     <th>boolean</th>
-    <th>boolean</th>
+  </tr>
+  
+  <tr>
+    <th>limit</th>
+    <th>set limit to the number of abilities shown</th>
     <th>Integer</th>
+  </tr>
+  
+  <tr>
+    <th>offset</th>
+    <th>set limit to the number of abilities shwon</th>
     <th>Integer</th>
-    <th>boolean</th>
-    <th>boolean</th>
-    <th>Text</th>
-    <th>Text</th>
+  </tr>
+  
+  <tr>
+    <th>unused</th>
+    <th>not implemented</th>
+    <th>not applicable</th>
+  </tr>
+
+  <tr>
+    <th>generation</th>
+    <th>shows only abilities with that specified generation</th>
+    <th>text</th>
+  </tr>
+
+  <tr>
+    <th>query</th>
+    <th>shows only abilities which contain that specific key</th>
+    <th>text</th>
   </tr>
 </table>
+
+
 PUT /api/v1/abilities
+
 ####Required field
 <table style="width:100%">
   <tr>
     <th>Name</th>
     <th>Description</th>
-    <th>Type/th>
+    <th>Type</th>
   </tr>
   
   <tr>
+    <th>name</th>
+    <th>the name of the new ability</th>
+    <th>text</th>
+  </tr>
+  
+  <tr>
+    <th>generation</th>
+    <th>the generation of this ability</th>
+    <th>text</th>
+  </tr>
+</table>
+
+
 ##Generation
-  /api/v1/generations
+GET /api/v1/generations
+####Parameters
+<table style="width:100%">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Type</th>
+  </tr>
+  
+  <tr>
+    <th>query</th>
+    <th>when true shows the list of pokemons with this ability</th>
+    <th>boolean</th>
+  </tr>
+  
+  <tr>
+    <th>ability_number</th>
+    <th>when true shows the list of effects of that ability</th>
+    <th>boolean</th>
+  </tr>
+  
+  <tr>
+    <th>type_number</th>
+    <th>set limit to the number of abilities shown</th>
+    <th>Integer</th>
+  </tr>
+
+</table>
