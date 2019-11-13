@@ -13,5 +13,7 @@ class Scrapper(Resource):
 
     def post(self):
         load_pokemons_from_wikipedia()
-        return "done"
+        # check=self.get()
+        # return check
+
 

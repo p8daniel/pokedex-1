@@ -17,11 +17,13 @@ def load_pokemons_from_wikipedia():
     pokemons_table_rows = pokemons_table.findall('.//tr')
 
     pokemons = {}
+    generations=['generation-i','generation-ii','generation-iii','generation-iv','generation-v','generation-vi','generation-vii','generation-viii']
 
     for row in pokemons_table_rows[2:]:
         pokemon_id = None
 
         i = 0
+        gen_cont = 1
         for column in row.findall('td'):
             if i % 2 == 0:
                 content = column.text_content()
@@ -30,23 +32,31 @@ def load_pokemons_from_wikipedia():
                     pokemons[pokemon_id] = None
                 else:
                     i += 1
+                    gen_cont += 1
             else:
-                symbols_to_strip = ['\n', '※', '♭']
+                symbols_to_strip = ['\n', '※', '♭','♯','~','♭[e]']
                 pokemon_name = column.text_content()
+
                 for symbol in symbols_to_strip:
                     pokemon_name = pokemon_name.strip(symbol)
-
+                    pokemon_gen=generations[gen_cont]
+                print(pokemon_name)
                 if pokemon_id is not None:
-                    pokemons[pokemon_id] = pokemon_name
+                    pokemons[pokemon_id] = []
+                    pokemons[pokemon_id].append(pokemon_name)
+                    pokemons[pokemon_id].append(pokemon_gen)
                     pokemon_id = None
 
             i += 1
+            gen_cont += 1
 
     Pokemon.delete().execute()
     for pokemon_id in tqdm(pokemons.keys()):
-        pokemon_name = pokemons[pokemon_id]
+        pokemon_name, pokemon_gen = pokemons[pokemon_id]
 
         Pokemon.create(id=pokemon_id, name=pokemon_name)
+
+
 
 
 def get_wiki_pokemons_from_db():
