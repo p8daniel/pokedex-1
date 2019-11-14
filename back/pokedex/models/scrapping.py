@@ -17,6 +17,7 @@ class Pokemon(CommonModel):
     id = PrimaryKeyField()
     name = CharField()
     generation=CharField()
+    specie=CharField(null=True)
 
 
 with db:

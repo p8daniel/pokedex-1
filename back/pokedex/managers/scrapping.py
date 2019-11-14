@@ -17,15 +17,26 @@ def load_pokemons_from_wikipedia():
     pokemons_table_rows = pokemons_table.findall('.//tr')
 
     pokemons = {}
-    generations=['generation-i','generation-ii','generation-iii','generation-iv','generation-v','generation-vi','generation-vii','generation-viii']
+    generations = ['generation-i', 'generation-ii', 'generation-iii', 'generation-iv', 'generation-v', 'generation-vi',
+                   'generation-vii', 'generation-viii']
 
+    specie_symbols = {'': None, '※': 'Baby Pokémon', '♭': 'Mythical Pokémon', '♯': 'Ultra Beast', '~': 'Fossil Pokémon',
+                      '♭[e]': 'Mythical Pokémon'}
+    specie_colors = {'background-color: #9FCADF': 'Starter Pokémon', 'background-color: #E89483': 'Legendary Pokémon'}
     for row in pokemons_table_rows[2:]:
+
         pokemon_id = None
 
         i = 0
         gen_cont = 0
         for column in row.findall('td'):
-            # print(gen_cont)
+
+            # for attrib_name in column.attrib:
+            #     print('@' + attrib_name + '=' + column.attrib[attrib_name])
+            # img=column.findall('img')
+            # if len(img) >= 1:
+            #     print(img[0].tag)
+            # print(img['img alt'])
             if i % 2 == 0:
                 content = column.text_content()
                 if 'No additional' not in content:
@@ -35,34 +46,48 @@ def load_pokemons_from_wikipedia():
                     i += 1
                     gen_cont += 1
             else:
-                symbols_to_strip = ['\n', '※', '♭','♯','~','♭[e]', ]
+                symbols_to_strip = ['※', '♭', '♯', '~', '♭[e]']
                 pokemon_name = column.text_content()
-
-
+                pokemon_symbol = ''
+                pokemon_name = pokemon_name.strip('\n')
                 for symbol in symbols_to_strip:
-                    pokemon_name = pokemon_name.strip(symbol)
-                    pokemon_gen=generations[gen_cont]
+                    if symbol in pokemon_name:
+                        print(pokemon_name)
+                        print(symbol)
+                        pokemon_name = pokemon_name.strip(symbol)
+                        print(pokemon_name)
+                        pokemon_symbol = symbol
+                pokemon_gen = generations[gen_cont]
                 # print(pokemon_name)
+
                 pokemon_name = pokemon_name.rstrip()
                 if pokemon_id is not None:
                     pokemons[pokemon_id] = []
                     pokemons[pokemon_id].append(pokemon_name)
                     pokemons[pokemon_id].append(pokemon_gen)
+                    if 'style' in column.attrib:
+                        if column.attrib['style'] in specie_colors:
+                            pokemons[pokemon_id].append(specie_colors[column.attrib['style']])
+                            # print(pokemons[pokemon_id])
+                            # print(specie_colors[column.attrib['style']])
+                    if len(pokemons[pokemon_id]) <3:
+                        pokemons[pokemon_id].append(specie_symbols[pokemon_symbol])
+                        # print(pokemons[pokemon_id])
+
+
                     pokemon_id = None
                     gen_cont += 1
 
             i += 1
 
-
     Pokemon.delete().execute()
     for pokemon_id in tqdm(pokemons.keys()):
-        pokemon_name, pokemon_gen = pokemons[pokemon_id]
+        # print(pokemons[pokemon_id])
+        pokemon_name, pokemon_gen, pokemon_specie = pokemons[pokemon_id]
 
-        Pokemon.create(id=pokemon_id, name=pokemon_name, generation=pokemon_gen)
-
-
+        Pokemon.create(id=pokemon_id, name=pokemon_name, generation=pokemon_gen, specie=pokemon_specie)
 
 
 def get_wiki_pokemons_from_db():
-    pokemons=Pokemon.select().order_by(Pokemon.id)
+    pokemons = Pokemon.select().order_by(Pokemon.id)
     return pokemons
