@@ -57,7 +57,7 @@ def load_pokemons_from_wikipedia():
                     if symbol in pokemon_name:
                         pokemon_name = pokemon_name.strip(symbol)
                         pokemon_symbol = symbol
-                pokemon_gen = generations[int((i - 1) / 2)]
+                pokemon_gen = generations[((i - 1) // 2)]
 
                 pokemon_name = pokemon_name.rstrip()
                 if pokemon_id is not None:

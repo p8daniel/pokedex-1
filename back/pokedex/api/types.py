@@ -8,10 +8,10 @@ class Types(Resource):
     def get(self):
         pokemons = request.args.get('pokemons', 'false') == 'true'
         unused = request.args.get('unused', 'false') == 'true'
-        search= request.args.get('query', None)
-        types = get_types(search, unused)
+        search = request.args.get('query', None)
+        # types = get_types(search, unused)
 
-        types = get_types(search=query, unused=unused)
+        types = get_types(search=search, unused=unused)
 
         result = []
         for type in types:
