@@ -10,7 +10,7 @@ class UserAgent(Resource):
         # print(request.user_agent)
         # UserAgent
 
-        results=get_user_history()
+        results = get_user_history()
         # result=[]
         # for elem in history:
         #     result.append(elem.get_small_data())

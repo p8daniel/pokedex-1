@@ -18,3 +18,22 @@ class AbilityNotFoundError(NotFoundError):
 class TypeNotFoundError(NotFoundError):
     def __init__(self, resource_id):
         NotFoundError.__init__(self, "Type", resource_id)
+
+
+class CollectionNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "Collection", resource_id)
+
+
+class UserNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "User", resource_id)
+
+
+class SpecieNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "Specie", resource_id)
+
+class PokemonCollectionNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "Pokemon", resource_id)

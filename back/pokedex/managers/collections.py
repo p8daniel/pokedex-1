@@ -1,7 +1,10 @@
 # import requests
 # from playhouse.shortcuts import update_model_from_dict
 # from peewee import fn
+from pokedex.errors.not_found import CollectionNotFoundError, UserNotFoundError, PokemonCollectionNotFoundError
 from pokedex.models.collection import User, Collection, PokemonCollection
+
+
 # from pokedex.models.consommable import Potion, PotionCollection
 
 
@@ -10,7 +13,10 @@ def create_new_user(name):
 
 
 def get_user_by_name(user_name):
-    return User.get_or_none(name=user_name)
+    user = User.get_or_none(name=user_name)
+    if user is None:
+        raise UserNotFoundError(user_name)
+    return user
 
 
 def create_a_new_collection(name, user):
@@ -40,6 +46,7 @@ def delete_pokemon_from_collection(pokemon_collection, collection=None):
     # selected_pokemons.delete()
     pokemon_collection.delete_instance(recursive=True)
 
+
 # def update_pokemon(pokemon, stat_name, stat_value):
 #     pokemon.stat_name=stat_value
 #     pokemon.save()
@@ -51,18 +58,20 @@ def get_pokemon_list(collection):
 
 
 def get_collection_by_name(collection_name):
-    return Collection.get_or_none(name=collection_name)
+    collection = Collection.get_or_none(name=collection_name)
+    if collection is None:
+        raise CollectionNotFoundError(collection_name)
+    return collection
 
 
 def get_pokemonscollection_by_name(pokemon_name, collection):
-
-    pokemons_collection=PokemonCollection.select().where(PokemonCollection.collection_id==collection, PokemonCollection.name==pokemon_name)
+    pokemons_collection = PokemonCollection.select().where(PokemonCollection.collection_id == collection,
+                                                           PokemonCollection.name == pokemon_name)
+    if len(pokemons_collection) == 0:
+        raise PokemonCollectionNotFoundError(pokemon_name)
     return pokemons_collection
 
 
 def get_pokemons_from_collection(collection):
-    pokemons_collections=PokemonCollection.select().where(PokemonCollection.collection==collection)
+    pokemons_collections = PokemonCollection.select().where(PokemonCollection.collection == collection)
     return pokemons_collections
-
-
-

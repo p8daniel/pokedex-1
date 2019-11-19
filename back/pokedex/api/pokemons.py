@@ -35,15 +35,16 @@ class Pokemon(Resource):
     def get(self, pokemon_name):
         ask_shape = request.args.get('shape', 'false') == 'true'
         pokemon = get_pokemon_by_name(pokemon_name)
-        if pokemon is None:
-            raise PokemonNotFoundError(pokemon_name)
-
+        # if pokemon is None:
+        #     raise PokemonNotFoundError(pokemon_name)
         return pokemon.get_small_data(ask_shape)
 
     def patch(self, pokemon_name):
         pokemon = get_pokemon_by_name(pokemon_name)
         if pokemon is None:
-            return {'msg': 'Not found'}, 404
+            raise PokemonNotFoundError(pokemon_name)
+        # if pokemon is None:
+        #     return {'msg': 'Not found'}, 404
         data = request.json
         edit_pokemon(pokemon, data)
         pokemon = get_pokemon_by_name(pokemon_name)

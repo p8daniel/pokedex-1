@@ -1,1 +1,1 @@
-from .not_found import NotFoundError
+from .not_found import *

@@ -41,7 +41,7 @@ def register_api(app):
 
     @api_bp.errorhandler(NotFoundError)
     def if_not_found(error):
-        response = {"error": f"{error.resource} {error.resource_id} not found"}
+        response = {"error": f"{error.resource} {error.resource_id} not found !!!"}
         return response, 404
 
     api.add_resource(Pokemons, '/pokemons')

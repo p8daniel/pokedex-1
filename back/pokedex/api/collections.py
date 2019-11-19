@@ -1,4 +1,6 @@
 from flask import request
+
+from pokedex.errors.not_found import PokemonNotFoundError
 from pokedex.managers.collections import get_pokemonscollection_by_name, delete_pokemon_from_collection, \
     create_new_user, \
     get_user_by_name, create_a_new_collection, get_collection_by_name, add_pokemon_to_collection, \
@@ -22,14 +24,16 @@ class User(Resource):
 class Collections(Resource):
     def put(self):
         collection_name = request.args['name']
-        collection = get_collection_by_name(collection_name)
-        if collection is not None:
-            return {'msg': 'Collection already exist'}, 404
-
+        try:
+            collection = get_collection_by_name(collection_name)
+            if collection is not None:
+                return {'error': 'Collection already exist'}, 404
+        except:
+            pass
         user_name = request.args['user']
         user = get_user_by_name(user_name)
-        if user is None:
-            return {'msg': 'Not found'}, 404
+        # if user is None:
+        #     return {'msg': 'Not found'}, 404
 
         new_collection = create_a_new_collection(collection_name, user)
         return "%s added to %s" % (new_collection.name, user.name)
@@ -38,24 +42,26 @@ class Collections(Resource):
 class Collection(Resource):
     def put(self, collection_name):
         collection = get_collection_by_name(collection_name)
-        if collection is None:
-            return {'msg': 'Collection not found'}, 404
+        # if collection is None:
+        #     return {'msg': 'Collection not found'}, 404
         pokemon_name = request.args['pokemon']
         pokemon = get_pokemon_by_name(pokemon_name)
         if pokemon is None:
-            return {'msg': 'Pokemon Not found'}, 404
+            raise PokemonNotFoundError(pokemon_name)
+        # if pokemon is None:
+        #     return {'msg': 'Pokemon Not found'}, 404
         else:
             add_pokemon_to_collection(pokemon, collection)
             return "%s added to %s" % (pokemon.name, collection.name)
 
     def delete(self, collection_name):
         collection = get_collection_by_name(collection_name)
-        if collection is None:
-            return {'msg': 'Collection not found'}, 404
+        # if collection is None:
+        #     return {'msg': 'Collection not found'}, 404
         pokemon_name = request.args['pokemon']
         pokemons_collection = get_pokemonscollection_by_name(pokemon_name, collection)
-        if pokemons_collection is None:
-            return {'msg': 'No pokemon found with this name '}, 404
+        # if pokemons_collection is None:
+        #     return {'msg': 'No pokemon found with this name '}, 404
         # else:
         #     print(pokemons_collection[0].name)
 
@@ -68,12 +74,12 @@ class Collection(Resource):
 
     def patch(self, collection_name):
         collection = get_collection_by_name(collection_name)
-        if collection is None:
-            return {'msg': 'Collection not found'}, 404
+        # if collection is None:
+        #     return {'msg': 'Collection not found'}, 404
         pokemon_name = request.args['pokemon']
         pokemon_collection = get_pokemonscollection_by_name(pokemon_name, collection)
-        if pokemon_collection is None:
-            return {'msg': 'Not found'}, 404
+        # if pokemon_collection is None:
+        #     return {'msg': 'Not found'}, 404
         data = request.json
         edit_pokemon(pokemon_collection, data)
         pokemon_collection = get_pokemonscollection_by_name(pokemon_name, collection)
@@ -81,8 +87,8 @@ class Collection(Resource):
 
     def get(self, collection_name):
         collection = get_collection_by_name(collection_name)
-        if collection is None:
-            return {'msg': 'Collection not found'}, 404
+        # if collection is None:
+        #     return {'msg': 'Collection not found'}, 404
         result = []
         pokemons_collection = get_pokemons_from_collection(collection)
         for elem in pokemons_collection:

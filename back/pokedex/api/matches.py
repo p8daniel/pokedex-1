@@ -12,14 +12,14 @@ class Play(Resource):
         player1_name = request.args['player1']
         player2_name = request.args['player2']
         player1 = get_user_by_name(player1_name)
-        if player1 is None:
-            return {'msg': 'Player1 not found'}, 404
+        # if player1 is None:
+        #     return {'msg': 'Player1 not found'}, 404
         print(player1.name)
         match_log.append("Player1 is " + player1.name)
 
         player2 = get_user_by_name(player2_name)
-        if player2 is None:
-            return {'msg': 'Player2 not found'}, 404
+        # if player2 is None:
+        #     return {'msg': 'Player2 not found'}, 404
         print(player2.name)
         match_log.append("Player2 is " + player2.name)
 
