@@ -8,3 +8,13 @@ class NotFoundError(Exception):
 class PokemonNotFoundError(NotFoundError):
     def __init__(self, resource_id):
         NotFoundError.__init__(self, "Pokemon", resource_id)
+
+
+class AbilityNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "Ability", resource_id)
+
+
+class TypeNotFoundError(NotFoundError):
+    def __init__(self, resource_id):
+        NotFoundError.__init__(self, "Type", resource_id)

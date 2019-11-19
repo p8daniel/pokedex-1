@@ -13,6 +13,7 @@ class Types(Resource):
 
         types = get_types(search=search, unused=unused)
 
+
         result = []
         for type in types:
             type_result = type.get_small_data()

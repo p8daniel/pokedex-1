@@ -18,24 +18,22 @@ from .useragents import UserAgent
 from .generations import Generation
 from .scrapping import Scrapper
 
-
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 
 
-
 def register_api(app):
+    # @app.route("/")  define an endpoint
 
-    @app.route("/")
     def get_my_ip():
-        ip=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-        request_data={'method': request.method, 'url':request.url,'ip':ip, 'parameters':request.args,'user_agent':request.user_agent}
+        ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        request_data = {'method': request.method, 'url': request.url, 'ip': ip, 'parameters': request.args,
+                        'user_agent': request.user_agent}
         return request_data
 
     @api_bp.before_request
     def before_request():
         db.connect(reuse_if_open=True)
-
 
     @api_bp.teardown_request
     def after_request(exception=None):
@@ -63,8 +61,5 @@ def register_api(app):
     api.add_resource(Abilities, '/abilities')
     api.add_resource(Generation, '/generations')
     api.add_resource(Scrapper, '/scrapping')
-
-
-
 
     app.register_blueprint(api_bp, url_prefix="/api/v1")
