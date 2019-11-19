@@ -5,7 +5,6 @@ from pokedex.managers.collections import get_user_by_name
 from pokedex.managers.matches import fight
 
 
-
 class Play(Resource):
     def get(self):
         match_log = []

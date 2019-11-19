@@ -3,6 +3,7 @@ from peewee import *
 from .database import db
 from playhouse.shortcuts import model_to_dict
 
+
 class CommonModel(Model):
     def get_small_data(self):
         return model_to_dict(self, recurse=False, backrefs=False)
@@ -18,15 +19,14 @@ class SearchHistory(CommonModel):
     ip = CharField()
     search = CharField()
 
+
 class UserAgentHistory(CommonModel):
     id = PrimaryKeyField()
     IPadress = CharField()
     url = CharField()
     method = CharField()
     parameters = CharField(null=True)
-    user_agent=CharField()
-
-
+    user_agent = CharField()
 
 
 with db:

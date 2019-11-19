@@ -3,15 +3,17 @@ from flask_restful import Resource
 
 from pokedex.errors.not_found import PokemonNotFoundError
 from pokedex.managers.analytics import add_pokemon_search_history
-from pokedex.managers.pokemons import search_pokemons, get_pokemon_by_name, create_pokemon, delete_pokemon, get_stat_average, edit_pokemon
+from pokedex.managers.pokemons import search_pokemons, get_pokemon_by_name, create_pokemon, delete_pokemon, \
+    get_stat_average, edit_pokemon
+
+
 # from pokedex.managers.types import get_list_types, get_types
 
 class Pokemons(Resource):
     def get(self):
-
         # query = request.args['query']
         query = request.args.get('query', "")
-        type_query= request.args.get('type', None)
+        type_query = request.args.get('type', None)
         ability_query = request.args.get('filter_ability', None)
         ask_effect = request.args.get('effect', 'false') == 'true'
         ask_shape = request.args.get('shape', 'false') == 'true'
@@ -19,9 +21,8 @@ class Pokemons(Resource):
         pokemons_matching = search_pokemons(query, ability_query, type_query)
         pokemons = [pokemon.get_small_data(ask_effect, ask_shape, show_abilities) for pokemon in pokemons_matching]
 
-
         add_pokemon_search_history(request.remote_addr, query)
-        
+
         return pokemons
 
     def post(self):

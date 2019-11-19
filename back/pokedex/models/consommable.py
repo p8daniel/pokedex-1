@@ -22,6 +22,7 @@ class PotionCollection(CommonModel):
     id = PrimaryKeyField()
     amount = CharField()
 
+
 with db:
     Potion.create_table(fail_silently=True)
     PotionCollection.create_table(fail_silently=True)

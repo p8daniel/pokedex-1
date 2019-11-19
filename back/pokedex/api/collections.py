@@ -88,7 +88,3 @@ class Collection(Resource):
         for elem in pokemons_collection:
             result.append(elem.get_small_data())
         return result
-
-
-
-

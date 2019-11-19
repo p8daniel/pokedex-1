@@ -3,6 +3,7 @@ from peewee import *
 from .database import db
 from playhouse.shortcuts import model_to_dict
 
+
 class CommonModel(Model):
     def get_small_data(self):
         return model_to_dict(self, recurse=False, backrefs=False)
@@ -14,16 +15,18 @@ class CommonModel(Model):
 
 class User(CommonModel):
     id = PrimaryKeyField()
-    name=CharField()
+    name = CharField()
+
 
 class Collection(CommonModel):
     id = PrimaryKeyField()
     name = CharField(unique=True)
-    user=ForeignKeyField(User)
+    user = ForeignKeyField(User)
+
 
 class PokemonCollection(CommonModel):
-    id=PrimaryKeyField()
-    collection=ForeignKeyField(Collection)
+    id = PrimaryKeyField()
+    collection = ForeignKeyField(Collection)
 
     pokemon_id = FloatField()
     name = CharField()
@@ -33,7 +36,6 @@ class PokemonCollection(CommonModel):
     attack = FloatField()
     special_defense = FloatField()
     speed = FloatField()
-
 
     def heal(self, amount, max_hp):
         self.hp = self.hp + int(amount)
@@ -43,20 +45,18 @@ class PokemonCollection(CommonModel):
             print('hp of ', self.name, 'is at max')
         return self.hp
 
-
-
-
     # pokemon_sprite_back = CharField()
     # pokemon_sprite_front = CharField()
 
+
 class Match(CommonModel):
-    id=PrimaryKeyField()
-    player1=ForeignKeyField(User)
-    player2=ForeignKeyField(User)
+    id = PrimaryKeyField()
+    player1 = ForeignKeyField(User)
+    player2 = ForeignKeyField(User)
 
 
 class PokemonMatch(CommonModel):
-    id=PrimaryKeyField()
+    id = PrimaryKeyField()
     pokemon_id = FloatField()
     name = CharField()
     hp = FloatField()
@@ -66,7 +66,7 @@ class PokemonMatch(CommonModel):
     special_defense = FloatField()
     speed = FloatField()
     player = ForeignKeyField(User)
-    match=ForeignKeyField(Match)
+    match = ForeignKeyField(Match)
 
     def take_damages(self, attack):
         damages = attack - self.defense
@@ -77,8 +77,6 @@ class PokemonMatch(CommonModel):
             self.hp = 0
         self.save()
         return self.hp
-
-
 
 
 # class PokemonPlayer(CommonModel):
