@@ -4,6 +4,7 @@ from flask_restful import Api
 from pokedex.errors import NotFoundError
 from pokedex.errors import AlreadyExistError
 from pokedex.models.database import db
+import pokedex
 from pokedex.managers.analytics import add_request_history
 
 from .pokemons import Pokemon, Pokemons, Stats
@@ -40,7 +41,7 @@ def register_api(app):
     def after_request(exception=None):
         db.close()
 
-    @api_bp.errorhandler(NotFoundError)
+    @api_bp.errorhandler(pokedex.errors.NotFoundError)
     def if_not_found(error):
         response = {"error": f"{error.resource} {error.resource_id} not found !!!"}
         return response, 404\

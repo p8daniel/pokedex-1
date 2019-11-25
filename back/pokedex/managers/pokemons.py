@@ -17,8 +17,11 @@ def create_pokemon(name, hp, special_attack, defense, attack, special_defense, s
     stats = {'hp': hp, 'special_attack': special_attack, 'defense': defense,
              'attack': attack, 'special_defense': special_defense,
              'speed': speed}
-    pokemon = Pokemon.get_or_none(name=name)
-    if pokemon is None:
+    try:
+        pokemon = get_pokemon_by_name(name)
+        update_model_from_dict(pokemon, stats)
+        pokemon.save()
+    except PokemonNotFoundError:
         pokemon = Pokemon.create(name=name, **stats)
 
     return pokemon
