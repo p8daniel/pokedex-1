@@ -34,6 +34,7 @@ class SpecieNotFoundError(NotFoundError):
     def __init__(self, resource_id):
         NotFoundError.__init__(self, "Specie", resource_id)
 
+
 class PokemonCollectionNotFoundError(NotFoundError):
     def __init__(self, resource_id):
         NotFoundError.__init__(self, "Pokemon", resource_id)

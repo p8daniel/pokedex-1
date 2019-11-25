@@ -1,6 +1,7 @@
 from flask import request
 
 from pokedex.errors.not_found import PokemonNotFoundError
+from pokedex.errors.already_exist import CollectionAlreadyExistError
 from pokedex.managers.collections import get_pokemonscollection_by_name, delete_pokemon_from_collection, \
     create_new_user, \
     get_user_by_name, create_a_new_collection, get_collection_by_name, add_pokemon_to_collection, \
@@ -16,8 +17,8 @@ class User(Resource):
 
     def get(self, user_name):
         user = get_user_by_name(user_name)
-        if user is None:
-            return {'msg': 'Not found'}, 404
+        # if user is None:
+        #     return {'msg': 'Not found'}, 404
         return user.name
 
 
@@ -26,10 +27,11 @@ class Collections(Resource):
         collection_name = request.args['name']
         try:
             collection = get_collection_by_name(collection_name)
-            if collection is not None:
-                return {'error': 'Collection already exist'}, 404
         except:
             pass
+        if collection is not None:
+            raise CollectionAlreadyExistError(collection_name)
+            # return {'error': 'Collection already exist'}, 422
         user_name = request.args['user']
         user = get_user_by_name(user_name)
         # if user is None:

@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_restful import Api
 
 from pokedex.errors import NotFoundError
+from pokedex.errors import AlreadyExistError
 from pokedex.models.database import db
 from pokedex.managers.analytics import add_request_history
 
@@ -42,7 +43,12 @@ def register_api(app):
     @api_bp.errorhandler(NotFoundError)
     def if_not_found(error):
         response = {"error": f"{error.resource} {error.resource_id} not found !!!"}
-        return response, 404
+        return response, 404\
+
+    @api_bp.errorhandler(AlreadyExistError)
+    def if_not_found(error):
+        response = {"error": f"{error.resource} {error.resource_id} alredy exist!"}
+        return response, 422
 
     api.add_resource(Pokemons, '/pokemons')
     api.add_resource(Pokemon, '/pokemon/<pokemon_name>')
